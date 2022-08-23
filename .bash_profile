@@ -1,3 +1,5 @@
+export PATH="$PATH:/opt/homebrew/bin"
+
 function _branches() {
     if [ -n "$1" ]; then
         echo "$1"
@@ -24,6 +26,16 @@ function monitors() {
 # display git branch in the terminal prompt
 export PS1='\[\e[1;91m\][\w]\[\e[0m\]\[\e[32m\]$(_parse_git_branch)\[\e[00m\]$ '
 
+
+function my_issues(){
+    gh issue list --assignee @me
+}
+
+function my_prs(){
+    gh issue list --assignee @me
+}
+
+# new_issue_branch creates an issue branch based off of a github issue
 function new_issue_branch() {
     local issueNumber=$1
     local issueDescription=$(gh issue view ${issueNumber} --repo cosmos/ibc-go --json title | jq -r .title | awk '{print tolower($0)}' | tr " " - | sed s/'[`:()]'//g)

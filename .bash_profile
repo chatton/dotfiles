@@ -1,5 +1,8 @@
 export PATH="$PATH:/opt/homebrew/bin"
 
+alias smb="git stash && git checkout main && git pull"
+alias mb="git checkout main && git pull"
+
 function _branches() {
     if [ -n "$1" ]; then
         echo "$1"

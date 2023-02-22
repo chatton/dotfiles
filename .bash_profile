@@ -1,7 +1,11 @@
 export PATH="$PATH:/opt/homebrew/bin"
+export PATH="$PATH:/usr/local/bin"
 
 alias smb="git stash && git checkout main && git pull"
 alias mb="git checkout main && git pull"
+
+# enable fzf with reverse search
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 function _branches() {
     if [ -n "$1" ]; then
@@ -111,6 +115,14 @@ function my_issues(){
 function my_prs(){
     gh pr list --author @me
 }
+
+function view_my_prs(){
+    pr_numbers="$(gh pr list --author @me --json number  | jq '.[]|.number')"
+    for pr in $pr_numbers; do
+        gh pr view $pr --web
+    done
+}
+
 
 # new_issue_branch creates an issue branch based off of a github issue
 function new_issue_branch() {

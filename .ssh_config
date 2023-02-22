@@ -1,3 +1,7 @@
 Host qnap
     HostName qnap
     User cianhatton
+
+Host snunmu
+    HostName snunmu
+    User cianhatton

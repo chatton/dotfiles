@@ -12,15 +12,17 @@ function _branches() {
         echo "$1"
         return
     else
-        git for-each-ref --sort=committerdate refs/heads/ | awk -F'heads/' '{ print $NF }' | fzf
+        git for-each-ref --sort=committerdate refs/heads/ | awk -F'heads/' '{ print $NF }' | tail -r | fzf
     fi
 }
 
 function cb() {
-    gh co
-#     gh alias set co --shell 'id="$(gh pr list -L100 | fzf | cut -f1)"; [ -n "$id" ] && gh pr checkout "$id"'
-#     branch=$(_branches)
-#     git checkout "${branch}"
+    if [[  "$(git status -s)" ]]; then
+        git stash
+    fi
+
+    branch=$(_branches)
+    git checkout "${branch}" > /dev/null 2>&1
 }
 
 # gh pr list | fzf | awk '{print $1}' | gh pr view --web

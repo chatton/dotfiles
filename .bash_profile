@@ -1,6 +1,9 @@
 export PATH="$PATH:/opt/homebrew/bin"
 export PATH="$PATH:/usr/local/bin"
 
+export PATH="/opt/homebrew/Cellar/python\@3.11/3.11.4/bin/:$PATH"
+export PATH="~/go/bin/:$PATH"
+
 alias smb="git stash && git checkout main && git pull"
 alias mb="git checkout main && git pull"
 
@@ -118,19 +121,23 @@ function my_prs(){
     gh pr list --author @me
 }
 
+function open_pr(){
+    gh pr view --web
+}
+
 function view_my_prs(){
-    pr_numbers="$(gh pr list --author @me --json number  | jq '.[]|.number')"
-    for pr in $pr_numbers; do
-        gh pr view $pr --web
-    done
+    /Users/chatton/checkouts/gitea/scripts/zx/view_my_prs.mjs
 }
 
 
 # new_issue_branch creates an issue branch based off of a github issue
 function new_issue_branch() {
-    local issueNumber=$1
-    local issueDescription=$(gh issue view ${issueNumber} --repo cosmos/ibc-go --json title | jq -r .title | awk '{print tolower($0)}' | tr " " - | sed s/'[`:()]'//g)
-    git checkout -b "cian/issue#${issueNumber}-${issueDescription}"
+    /Users/chatton/checkouts/gitea/scripts/zx/new_issue_branch.mjs "$1"
 }
 
 . "$HOME/.cargo/env"
+
+# Setting PATH for Python 3.11
+# The original version is saved in .bash_profile.pysave
+PATH="/Library/Frameworks/Python.framework/Versions/3.11/bin:${PATH}"
+export PATH
